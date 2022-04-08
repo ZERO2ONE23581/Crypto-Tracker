@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import { useQuery } from "react-query";
 import { fetchCrypto } from "../api";
+import { Link } from "react-router-dom";
 
 const year = new Date().getFullYear();
 
@@ -15,32 +16,51 @@ interface ICrypto {
   type: string;
 }
 
+const COINLENGTH = 10;
+
 function Home() {
   const { isLoading, data } = useQuery<ICrypto[]>("Crypto", fetchCrypto);
 
   return (
     <>
       <Container>
+        <Helmet>
+          <title>JW Crypto Tracker</title>
+        </Helmet>
+
         <header>
-          <Helmet>
-            <title>JW Crypto Tracker</title>
-          </Helmet>
+          <h1>
+            {year} Top {COINLENGTH} Crypto Currencies{" "}
+          </h1>
         </header>
 
         <main>
-          <h1>{year} Top 10 Crypto Currencies </h1>
-          <CoinList>
-            {data?.slice(0, 10).map((coin) => (
-              <article>
-                <ul>
-                  <li>{coin.rank}</li>
-                  <li>{coin.symbol}</li>
-                  <li>{coin.name}</li>
-                </ul>
-              </article>
-            ))}
-          </CoinList>
+          {isLoading ? (
+            <span>"Loading..."</span>
+          ) : (
+            <CoinList>
+              {data?.slice(0, COINLENGTH).map((crypto) => (
+                <article>
+                  <Link to={crypto.id}>
+                    <ul>
+                      <li key={crypto.id}>{crypto.rank}</li>
+                      <li key={crypto.id}>{crypto.symbol}</li>
+                      <li key={crypto.id}>{crypto.name}</li>
+                      <li>
+                        <img
+                          key={crypto.symbol}
+                          src={`https://cryptocurrencyliveprices.com/img/${crypto.id}.png`}
+                          alt="코인로고 이미지"
+                        />
+                      </li>
+                    </ul>
+                  </Link>
+                </article>
+              ))}
+            </CoinList>
+          )}
         </main>
+
         <footer>&copy; {year} JW Crypto Tracker</footer>
       </Container>
     </>
@@ -50,21 +70,36 @@ function Home() {
 export default Home;
 
 const CoinList = styled.article`
-  padding: 0 25px;
-  article {
-    margin: 0 auto;
-    width: 60%;
-  }
+  width: 65%;
+  margin: 0 auto;
   ul {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+    &:hover {
+      li {
+        border: 3px solid ${(props) => props.theme.accentColor};
+        color: ${(props) => props.theme.accentColor};
+      }
+    }
     li {
-      border: 1px solid ${(props) => props.theme.accentColor};
-      padding: 20px;
+      font-size: 1rem;
+      border: 3px solid ${(props) => props.theme.textColor};
+
       text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 60px;
+      img {
+        width: 45px;
+        height: 45px;
+      }
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3) {
+        border-right: none;
+      }
       &:nth-child(1) {
         width: 10%;
       }
@@ -72,23 +107,33 @@ const CoinList = styled.article`
         width: 20%;
       }
       &:nth-child(3) {
-        width: 70%;
+        font-size: 1.5rem;
+        width: 50%;
+      }
+      &:nth-child(4) {
+        width: 20%;
       }
     }
   }
 `;
 
 const Container = styled.section`
-  border: 1px solid white;
   margin: 0 auto;
   text-align: center;
-  height: 100vh;
   width: 50%;
-  font-size: 1.2rem;
-  h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: ${(props) => props.theme.accentColor};
-    margin: 5% 0;
+  header {
+    h1 {
+      font-size: 40px;
+      padding: 30px 0;
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
+  main {
+    span {
+      display: block;
+      font-size: 40px;
+      margin-top: 40px;
+      color: ${(props) => props.theme.accentColor};
+    }
   }
 `;
