@@ -20,6 +20,7 @@ const COINLENGTH = 10;
 
 function Home() {
   const { isLoading, data } = useQuery<ICrypto[]>("Crypto", fetchCrypto);
+  console.log(data);
 
   return (
     <>
@@ -41,7 +42,7 @@ function Home() {
             <CoinList>
               {data?.slice(0, COINLENGTH).map((crypto) => (
                 <article>
-                  <Link to={crypto.id}>
+                  <Link to={crypto.id} state={crypto.name}>
                     <ul>
                       <li key={crypto.id}>{crypto.rank}</li>
                       <li key={crypto.id}>{crypto.symbol}</li>
