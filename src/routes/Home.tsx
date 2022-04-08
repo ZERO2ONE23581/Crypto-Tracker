@@ -20,7 +20,6 @@ const COINLENGTH = 10;
 
 function Home() {
   const { isLoading, data } = useQuery<ICrypto[]>("Crypto", fetchCrypto);
-  console.log(data);
 
   return (
     <>

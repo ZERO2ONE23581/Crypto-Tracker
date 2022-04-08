@@ -87,64 +87,68 @@ export default function Coin() {
       <header>
         <h1>{state ? state : loading ? "Loading..." : infoData?.name}</h1>
       </header>
-      <main>
-        <BasicData>
-          <li>
-            <span>Symbol: </span>
-            <span>{infoData?.symbol}</span>
-          </li>
-          <li>
-            <span>Rank: </span>
-            <span>{infoData?.rank}</span>
-          </li>
-          <li>
+      {loading ? (
+        "Loading..."
+      ) : (
+        <main>
+          <BasicData>
             <li>
-              <span>Price: </span>
-              <span>$ {priceData?.quotes.USD.price.toFixed(2)}</span>
+              <span>Symbol: </span>
+              <span>{infoData?.symbol}</span>
             </li>
-          </li>
-        </BasicData>
-        <Description>{infoData?.description}</Description>
-        <DetailData>
-          <li>
-            <span>Total Supply: </span>
-            <span>{priceData?.total_supply}</span>
-          </li>
-          <li>
-            <span>Max Supply: </span>
-            <span>{priceData?.max_supply}</span>
-          </li>
-          <li>
-            <span>First Data at: </span>
-            <span>{infoData?.first_data_at}</span>
-          </li>
-          <li>
-            <span>Last Updated: </span>
-            <span>{infoData?.last_data_at}</span>
-          </li>
-          <li>
-            <span>Proof Type </span>
-            <span>{infoData?.proof_type}</span>
-          </li>
-        </DetailData>
-        <article>
-          <Btn isActive={chartMatch !== null}>
-            <Link to={`/${coinId}/chart`}>
-              <a>Chart</a>
-            </Link>
-          </Btn>
-          <Btn isActive={priceMatch !== null}>
-            <Link to={`/${coinId}/price`}>
-              <a>Price</a>
-            </Link>
-          </Btn>
-        </article>
+            <li>
+              <span>Rank: </span>
+              <span>{infoData?.rank}</span>
+            </li>
+            <li>
+              <li>
+                <span>Price: </span>
+                <span>$ {priceData?.quotes.USD.price.toFixed(2)}</span>
+              </li>
+            </li>
+          </BasicData>
+          <Description>{infoData?.description}</Description>
+          <DetailData>
+            <li>
+              <span>Total Supply: </span>
+              <span>{priceData?.total_supply}</span>
+            </li>
+            <li>
+              <span>Max Supply: </span>
+              <span>{priceData?.max_supply}</span>
+            </li>
+            <li>
+              <span>First Data at: </span>
+              <span>{infoData?.first_data_at}</span>
+            </li>
+            <li>
+              <span>Last Updated: </span>
+              <span>{infoData?.last_data_at}</span>
+            </li>
+            <li>
+              <span>Proof Type </span>
+              <span>{infoData?.proof_type}</span>
+            </li>
+          </DetailData>
+          <article>
+            <Btn isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>
+                <a>Chart</a>
+              </Link>
+            </Btn>
+            <Btn isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`}>
+                <a>Price</a>
+              </Link>
+            </Btn>
+          </article>
 
-        <Routes>
-          <Route path="Chart" element={<Chart />}></Route>
-          <Route path="Price" element={<Price />}></Route>
-        </Routes>
-      </main>
+          <Routes>
+            <Route path="Chart" element={<Chart coinId={coinId as string} />}></Route>
+            <Route path="Price" element={<Price />}></Route>
+          </Routes>
+        </main>
+      )}
     </Container>
   );
 }
