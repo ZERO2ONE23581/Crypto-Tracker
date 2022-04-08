@@ -145,7 +145,7 @@ export default function Coin() {
 
           <Routes>
             <Route path="Chart" element={<Chart coinId={coinId as string} />}></Route>
-            <Route path="Price" element={<Price />}></Route>
+            <Route path="Price" element={<Price coinId={coinId as string} />}></Route>
           </Routes>
         </main>
       )}
