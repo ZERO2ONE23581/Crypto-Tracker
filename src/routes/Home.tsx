@@ -1,21 +1,9 @@
 import styled from "styled-components";
-import Helmet from "react-helmet";
 import { useQuery } from "react-query";
 import { fetchCrypto } from "../api";
 import { Link } from "react-router-dom";
 
 const year = new Date().getFullYear();
-
-interface ICrypto {
-  id: string;
-  name: string;
-  symbol: string;
-  rank: number;
-  is_new: boolean;
-  is_active: boolean;
-  type: string;
-}
-
 const COINLENGTH = 10;
 
 function Home() {
@@ -24,10 +12,6 @@ function Home() {
   return (
     <>
       <Container>
-        <Helmet>
-          <title>JW Crypto Tracker</title>
-        </Helmet>
-
         <header>
           <h1>
             {year} Top {COINLENGTH} Crypto Currencies{" "}
@@ -60,8 +44,6 @@ function Home() {
             </CoinList>
           )}
         </main>
-
-        <footer>&copy; {year} JW Crypto Tracker</footer>
       </Container>
     </>
   );
@@ -69,6 +51,27 @@ function Home() {
 
 export default Home;
 
+const Container = styled.section`
+  margin: 0 auto;
+  text-align: center;
+  width: 50%;
+  header {
+    h1 {
+      font-family: "Roboto", sans-serif;
+      font-size: 2.5rem;
+      padding: 30px 0;
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
+  main {
+    span {
+      display: block;
+      font-size: 40px;
+      margin-top: 40px;
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
+`;
 const CoinList = styled.article`
   width: 65%;
   margin: 0 auto;
@@ -117,23 +120,12 @@ const CoinList = styled.article`
   }
 `;
 
-const Container = styled.section`
-  margin: 0 auto;
-  text-align: center;
-  width: 50%;
-  header {
-    h1 {
-      font-size: 40px;
-      padding: 30px 0;
-      color: ${(props) => props.theme.accentColor};
-    }
-  }
-  main {
-    span {
-      display: block;
-      font-size: 40px;
-      margin-top: 40px;
-      color: ${(props) => props.theme.accentColor};
-    }
-  }
-`;
+interface ICrypto {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+}

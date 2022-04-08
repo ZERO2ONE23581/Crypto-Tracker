@@ -104,7 +104,6 @@ export default function Price({ coinId }: PriceProps) {
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid red;
   padding-top: 20px;
   article {
     ul {
