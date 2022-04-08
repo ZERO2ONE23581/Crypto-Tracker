@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useMatch, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCrypto, fetchInfo, fetchPrice } from "../../api";
 import Chart from "./Chart";
@@ -70,6 +70,8 @@ interface IPrice {
 export default function Coin() {
   const { state } = useLocation() as ILocation;
   const { coinId } = useParams();
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
 
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfo>(
     ["info", coinId!],
@@ -125,18 +127,19 @@ export default function Coin() {
             <span>{infoData?.proof_type}</span>
           </li>
         </DetailData>
-        <BtnWrap>
-          <button>
+        <article>
+          <Btn isActive={chartMatch !== null}>
             <Link to={`/${coinId}/chart`}>
               <a>Chart</a>
             </Link>
-          </button>
-          <button>
+          </Btn>
+          <Btn isActive={priceMatch !== null}>
             <Link to={`/${coinId}/price`}>
               <a>Price</a>
             </Link>
-          </button>
-        </BtnWrap>
+          </Btn>
+        </article>
+
         <Routes>
           <Route path="Chart" element={<Chart />}></Route>
           <Route path="Price" element={<Price />}></Route>
@@ -158,6 +161,9 @@ const Container = styled.section`
       color: ${(props) => props.theme.accentColor};
     }
   }
+  article {
+    display: flex;
+  }
 `;
 const BasicData = styled.ul`
   border: 1px solid white;
@@ -170,16 +176,21 @@ const DetailData = styled(BasicData)`
   justify-content: flex-start;
 `;
 const Description = styled.p``;
-const BtnWrap = styled.div`
-  display: flex;
-  button {
-    width: 100%;
-    padding: 20px;
-    font-size: 20px;
-    border: 3px solid white;
+const Btn = styled.button<{ isActive: boolean }>`
+  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  font-size: ${(props) => (props.isActive ? "30px" : "20px")};
+  border: 3px solid
+    ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  margin-top: 10px;
+  width: 100%;
+  padding: 20px;
+  &:hover {
+    border: 3px solid ${(props) => props.theme.accentColor};
     a {
-      display: block;
-      color: white;
+      color: ${(props) => props.theme.accentColor};
     }
+  }
+  a {
+    display: block;
   }
 `;
